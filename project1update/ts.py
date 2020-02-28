@@ -11,14 +11,17 @@ import time
 
 # Set up server socket
 def serverT():
+        if len(sys.argv) != 2:
+                print("ERROR: PLEASE INPUT LISTEN PORT")
+		
         try:
                 ts = mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
                 print("TS server created successfully")
         except mysoc.error as err:
                 print('{} \n'.format("Error creating TS socket", err))
 
-        # Bind TS server to port 50006 and enable listening
-        server_binding = ('', 50006)
+        # Bind TS server to port specified by user and enable listening
+        server_binding = ('', int(sys.argv[1]))
         ts.bind(server_binding)
         ts.listen(1)
 

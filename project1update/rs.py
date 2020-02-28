@@ -11,14 +11,18 @@ import time
 
 # Set up server socket
 def serverR():
+        if len(sys.argv) != 2:
+                print("ERROR: PLEASE INPUT LISTEN PORT")
+
+
         try:
                 rs = mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
                 print("RS server created successfully")
         except mysoc.error as err:
                 print('{} \n'.format("Error creating RS socket", err))
 
-        # Bind RS server to port 50007 and enable listening
-        server_binding = ('', 50007)
+        # Bind RS server to port specified by user and enable listening
+        server_binding = ('', int(sys.argv[1]))
         rs.bind(server_binding)
         rs.listen(1)
 

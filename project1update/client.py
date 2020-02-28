@@ -11,8 +11,8 @@ import sys
 
 # Set up client sockets for TS and RS
 def client():
-		if len(sys.argv) != 3:
-			print("ERROR: PLEASE INPUT 2 PORTS")
+		if len(sys.argv) != 4:
+			print("ERROR: PLEASE INPUT THE RS SERVER AND 2 PORTS")
 
 		try:
 			ts_socket = mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
@@ -27,16 +27,17 @@ def client():
 			print('{} \n'.format("Client rs socket open error", err))
 
         # Define port for the server
-        # TODO: Change to take user input for both
-			
+        # TODO: Define only the RS server, do the TS server socket only if needed to go to it
 
-		port = int(sys.argv[1])
-		port2 = int(sys.argv[2])
+		port = int(sys.argv[2])
+		port2 = int(sys.argv[3])
 		sa_sameas_myaddr = mysoc.gethostbyname(mysoc.gethostname())
 
         # Connect to server on local machine
-        # TODO: Change to connect to any machine
-		server_binding = (sa_sameas_myaddr, port)
+        # TODO: Changed RS server to be from user input
+		# TODO: Move TS server binding and connect to after needing to connect to it
+
+		server_binding = (sys.argv[1], port)
 		server_binding2 = (sa_sameas_myaddr, port2)
 		ts_socket.connect(server_binding2)
 		rs_socket.connect(server_binding)
@@ -45,7 +46,7 @@ def client():
 		if inputFile.mode == 'r':
 				inputList = [i.rstrip() for i in inputFile]
 				inputString = '_'.join([str(j) for j in inputList])
-				query = inputString
+				query = inputString.lower()
 				rs_socket.send(query.encode('utf-8'))
 				returnQuery = rs_socket.recv(1024).decode('utf-8')
 				listData = returnQuery.split('_')
@@ -68,7 +69,15 @@ def client():
 									tempList[3] = 'Error:HOST NOT FOUND'
 								outputList[int(tempList[0])] = (tempList[1]+' '+tempList[2]+' '+tempList[3])
 
-				print(outputList)
+				# print(outputList)
+				
+				outputFile = open("RESOLVEDTEST.txt", "w")
+				
+				for i in range(0, len(outputList)):
+					outputFile.write(outputList[i] + "\n")
+
+				outputFile.close()
+				
                 
                                         
 t1 = threading.Thread(name='client', target=client)
