@@ -11,14 +11,18 @@ import time
 
 # Set up server socket
 def serverR():
+        if len(sys.argv) != 2:
+                print("ERROR: PLEASE INPUT LISTEN PORT")
+
+
         try:
                 rs = mysoc.socket(mysoc.AF_INET, mysoc.SOCK_STREAM)
                 print("RS server created successfully")
         except mysoc.error as err:
                 print('{} \n'.format("Error creating RS socket", err))
 
-        # Bind RS server to port 50007 and enable listening
-        server_binding = ('', 50007)
+        # Bind RS server to port specified by user and enable listening
+        server_binding = ('', int(sys.argv[1]))
         rs.bind(server_binding)
         rs.listen(1)
 
@@ -35,13 +39,16 @@ def serverR():
             listTable = [i.rstrip() for i in file]
             for entry in listTable:
                 tempList = entry.split(' ')
-                dnsTable.update({tempList[0]:[tempList[1],tempList[2]]})
+                if tempList[2] == 'A':
+                        dnsTable.update({tempList[0]:[tempList[1],tempList[2]]})
+                else:
+                        tsHostname = tempList[0]
             #Get the keys matching the queries and send the data to client
             for i in range(0, len(queryList)):
                     if queryList[i] in dnsTable:
                             info.append(queryList[i]+' '+dnsTable.get(queryList[i])[0]+' '+dnsTable.get(queryList[i])[1])
                     else:
-                            info.append(queryList[i]+' - NS')
+                            info.append(tsHostname+' - NS')
             toSend = '_'.join([str(j) for j in info])
             clientid.send(toSend.encode('utf-8'))
     
