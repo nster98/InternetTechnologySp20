@@ -91,9 +91,7 @@ def client():
             for i in range(0, len(outputList)):
                 print(outputList[i])
                 outputFile.write(outputList[i] + "\n")
-            outputFile.close()
-                                
-                
+            outputFile.close()         
                                         
 t1 = threading.Thread(name='client', target=client)
 t1.start()
