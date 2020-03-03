@@ -39,13 +39,16 @@ def serverR():
             listTable = [i.rstrip() for i in file]
             for entry in listTable:
                 tempList = entry.split(' ')
-                dnsTable.update({tempList[0]:[tempList[1],tempList[2]]})
+                if tempList[2] == 'A':
+                        dnsTable.update({tempList[0]:[tempList[1],tempList[2]]})
+                else:
+                        tsHostname = tempList[0]
             #Get the keys matching the queries and send the data to client
             for i in range(0, len(queryList)):
                     if queryList[i] in dnsTable:
                             info.append(queryList[i]+' '+dnsTable.get(queryList[i])[0]+' '+dnsTable.get(queryList[i])[1])
                     else:
-                            info.append(queryList[i]+' - NS')
+                            info.append(tsHostname+' - NS')
             toSend = '_'.join([str(j) for j in info])
             clientid.send(toSend.encode('utf-8'))
     
