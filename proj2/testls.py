@@ -52,10 +52,7 @@ def serverL():
 
         query = clientid.recv(1024).decode('utf-8')
 
-        print(query)
         clientQuery = query.split('_')
-        print(clientQuery)
-        print(type(clientQuery[0]))
 
 		# SET NO BLOCKING HERE
         ts1_socket.setblocking(0);
@@ -67,26 +64,25 @@ def serverL():
         readyTS1 = select.select([ts1_socket], [], [], 10)
         readyTS2 = select.select([ts2_socket], [], [], 10)
 
-        #print(ready[0])
-        #print(ts1_socket)
+
+        string1 = ''
+        string2 = ''
 
         if readyTS1[0]:
-            returnQuery1 = ts1_socket.recv(1024).decode('utf-8')
+            string1 += (ts1_socket.recv(1024).decode('utf-8'))
         else:
             print("TS1 timed out\n")
 
         	
         if readyTS2[0]:	
-            returnQuery2 = ts2_socket.recv(1024).decode('utf-8')
+            string2 += (ts2_socket.recv(1024).decode('utf-8'))
         else:
             print("TS2 timed out\n")
 
-        list1 = returnQuery1.split('_')
-        list2 = returnQuery2.split('_')
-
-        print(list1)
-        print(list2)
-        print(returnQuery1)
+        list1 = string1.split("_")
+        list2 = string2.split("_")
+        
+        
 
         toSendList = ['none']*(len(clientQuery))
         sublist1 = [None]*len(list1)
@@ -108,7 +104,7 @@ def serverL():
                 if clientQuery[i] == sublist2[j][0] and flag == 0:
                     toSendList[i] = list2[j]
                     flag = 1
-            print("i: " + str(i) + "Flag: " + str(flag) + "\n")
+            #print("i: " + str(i) + "Flag: " + str(flag) + "\n")
             if flag == 0:
                 toSendList[i] = str(clientQuery[i]) + " - Error:HOST NOT FOUND"
 

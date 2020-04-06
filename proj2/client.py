@@ -42,9 +42,12 @@ def client():
 
             # Split each part by spaces and put in list
             listData = returnQuery.split('_')
-            
-            print(listData)
-                                
+
+            outputFile = open(os.path.join(sys.path[0],"RESOLVED.txt"), "w")               
+            for i in range(0, len(listData)):
+                print(listData[i])
+                outputFile.write(listData[i] + "\n")
+            outputFile.close()                
                 
                                         
 t1 = threading.Thread(name='client', target=client)
