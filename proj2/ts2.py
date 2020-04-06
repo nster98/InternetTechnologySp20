@@ -43,10 +43,8 @@ def serverT2():
             for i in range(0, len(queryList)):
                     if queryList[i] in dnsTable:
                             info.append(queryList[i]+' '+dnsTable.get(queryList[i])[0]+' '+dnsTable.get(queryList[i])[1])
-                    else:
-                            info.append(queryList[i]+' - Error:HOST NOT FOUND')
-            toSend = '_'.join([str(j) for j in info])
-            clientid.send(toSend.encode('utf-8'))
+                            toSend =(queryList[i]+' '+dnsTable.get(queryList[i])[0]+' '+dnsTable.get(queryList[i])[1])+"_"
+                            clientid.send(toSend.encode('utf-8'))
             
     
 t4 = threading.Thread(name='serverT', target=serverT2)
