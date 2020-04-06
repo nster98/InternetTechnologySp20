@@ -52,7 +52,7 @@ def client():
                                         
 t1 = threading.Thread(name='client', target=client)
 t1.start()
-time.sleep(1)
+time.sleep(3)
 
 input("Hit ENTER to exit")
 

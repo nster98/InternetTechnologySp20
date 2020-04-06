@@ -73,7 +73,8 @@ def serverL():
         else:
             print("TS1 timed out\n")
 
-        	
+        time.sleep(2)
+   	
         if readyTS2[0]:	
             string2 += (ts2_socket.recv(1024).decode('utf-8'))
         else:
