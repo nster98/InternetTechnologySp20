@@ -52,6 +52,11 @@ def serverL():
 
         query = clientid.recv(1024).decode('utf-8')
 
+        print(query)
+        clientQuery = query.split('_')
+        print(clientQuery)
+        print(type(clientQuery[0]))
+
 		# SET NO BLOCKING HERE
         ts1_socket.setblocking(0);
         ts2_socket.setblocking(0);
@@ -78,18 +83,53 @@ def serverL():
 
         list1 = returnQuery1.split('_')
         list2 = returnQuery2.split('_')
-        toSendList = ['none']*len(list1)
+
+        print(list1)
+        print(list2)
+        print(returnQuery1)
+
+        toSendList = ['none']*(len(clientQuery))
         sublist1 = [None]*len(list1)
         sublist2 = [None]*len(list2)
 
-        for i in range(0, len(list1)): 
+        for i in range(0, len(list1)):
             sublist1[i] = list1[i].split(' ')
+
+        for i in range(0, len(list2)):
             sublist2[i] = list2[i].split(' ')
-            if sublist1[i][2] != 'Error:HOST':
-                toSendList[i] = list1[i]
-            else:
-                toSendList[i] = list2[i]
-           
+
+        for i in range(0, len(clientQuery)):
+            flag = 0
+            for j in range(0, len(list1)):
+                if clientQuery[i] == sublist1[j][0]:
+                    toSendList[i] = list1[j]
+                    flag = 1
+            for j in range(0, len(list2)):
+                if clientQuery[i] == sublist2[j][0] and flag == 0:
+                    toSendList[i] = list2[j]
+                    flag = 1
+            print("i: " + str(i) + "Flag: " + str(flag) + "\n")
+            if flag == 0:
+                toSendList[i] = str(clientQuery[i]) + " - Error:HOST NOT FOUND"
+
+        #for i in range(0, len(list1)): 
+         #   sublist1[i] = list1[i].split(' ')
+            #sublist2[i] = list2[i].split(' ')
+            #if sublist1[i][2] != 'Error:HOST':
+		#	flag = false
+		#	for (j in range(0, len(clientQuery))):
+         #       if sublist[i][0] == clientQuery[j]:
+          #          toSendList[i] = list1[i]
+           #         flag = true
+            #if flag == false:
+             #   toSendList[i] = sublist1[i][0] + " - Error:HOST NOT FOUND"
+
+        #for i in range(0, len(list2)):
+         #   sublist2[i] = list2[i].split(' ')
+          #  if len(sublist2[i]) == 3:
+           #     toSendList[i + len(list1)] = list2[i]
+            #else:
+             #   toSendList[i + len(list1)] = sublist2[i][0] + " - Error:HOST NOT FOUND"
        
         toSend = '_'.join([str(j) for j in toSendList])
 
