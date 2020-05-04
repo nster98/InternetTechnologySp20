@@ -1,6 +1,6 @@
-====================
-Names
-====================
+===================
+= Names
+===================
 
 Nathaniel Glikman	nmg116
 Stephen Scott		sms699
@@ -26,21 +26,21 @@ and then add the default gateway, which is what ```deafult gw``` is. All that's 
 To set up the per=destination routes, we do it all from r1. We need to use ```ip route add``` and specify a connection between two different IPs. Each device on r1 has a different IP that connects to a
 different host IP. Thus, our command needs to be ```r1 ip route add <host IP> via <r1-ethN IP>``` The via part makes the connection from r1 go through the specific host.
 
-======================
+=====================
 = Issues
-======================
+=====================
 
 There are no known issues with the commands. When using ping and traceroute, it works as intended.
 
-====================
+=======================
 = Problems
-====================
+=======================
 
 Problems that were had when doing this project was figuring out the correct commands to use. There was a lot of googling involved, as mininet and the commands were mostly unknown at the time. However,
 with time, we understood how the commands work, and were able to set up the routes correctly.
 
-=====================
+===============
 = Learned
-=====================
+===============
 
 We learned how to effectively work in a Linux environment. Learning the ip suite of commands is useful for debugging connections, and we can use this new found information in the future.
